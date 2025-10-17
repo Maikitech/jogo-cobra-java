@@ -1,0 +1,385 @@
+package br.edu.ifrs.veranopolis.jogocobra;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import javax.swing.AbstractAction;
+import javax.swing.JComponent;
+import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
+
+public class TelaJogo extends javax.swing.JFrame {
+
+    //o motor do game
+    private MotorDoJogo gameLoop;
+
+    public TelaJogo() {
+        initComponents();
+        configurarTeclado();
+        iniciarNovoJogo();
+    }
+
+    private void iniciarNovoJogo() {
+        SnakePanel sp = (SnakePanel) painel;
+        //zera tudo, a cobra volta pro começo
+        sp.reset();
+        // bota uma frutinha nova na tela pra começar a brincadeira
+        sp.spawnFruit();
+
+        // Se já tinha um jogo rolando, a gente para ele antes de começar o novo.
+        // Pra não dar duplicidade
+        if (gameLoop != null) {
+            gameLoop.stop();
+        }
+
+        //cria um motor zerinho e bota pra rodar.
+        gameLoop = new MotorDoJogo(this, sp);
+        gameLoop.start();
+    }
+
+    // Chamado lá do MotorDoJogo quando a cobra bate.
+    public void fimDeJogo() {
+        SnakePanel sp = (SnakePanel) painel;
+        atualizarStatus("Deu ruim! Fez " + sp.getTamanhoCobra() + " pontos.");
+        
+        // Pergunta se ele quer tentar de novo
+        int resposta = JOptionPane.showConfirmDialog(
+            this,
+            "E aí, guri, quer mais uma partida?",
+            "Game Over",
+            JOptionPane.YES_NO_OPTION
+        );
+        
+        // Se o cara disse que sim, começa tudo de novo
+        if (resposta == JOptionPane.YES_OPTION) {
+            iniciarNovoJogo();
+        } else {
+            // Se não, fechou o programa.
+            System.exit(0);
+        }
+    }
+
+    // uma função só pra mudar o texto lá de baixo na tela.
+    public void atualizarStatus(String texto) {
+        status.setText(texto);
+    }
+
+    private void configurarTeclado() {
+        // Esse esquema aqui é pra garantir que o teclado vai funcionar
+        // mesmo que o cara clique num botão sem querer. Bah, isso salva a vida!
+        JComponent rootPane = this.getRootPane();
+
+        //ligar a tecla a um "apelido" ---
+        //  basicamente, a gente diz: "ó, a setinha pra cima e o W vão se chamar 'pressUp'".
+        rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "pressUp");
+        rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0), "pressUp");
+
+        rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "pressDown");
+        rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_S, 0), "pressDown");
+
+        rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), "pressLeft");
+        rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0), "pressLeft");
+
+        rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), "pressRight");
+        rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_D, 0), "pressRight");
+
+        // Dizer o que cada "apelido" faz de verdade ---
+        SnakePanel sp = (SnakePanel) painel;
+
+        // Agora a gente pega o "pressUp" e manda a cobra ir pra cima.
+        // Mas só se ela não estiver indo pra baixo, pra não bugar tudo.
+        rootPane.getActionMap().put("pressUp", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (sp.getDirecao() != SnakePanel.BAIXO) sp.setDirecao(SnakePanel.CIMA);
+            }
+        });
+        
+        // Mesma coisa pra baixo...
+        rootPane.getActionMap().put("pressDown", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (sp.getDirecao() != SnakePanel.CIMA) sp.setDirecao(SnakePanel.BAIXO);
+            }
+        });
+        
+        // Pra esquerda...
+        rootPane.getActionMap().put("pressLeft", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (sp.getDirecao() != SnakePanel.DIR) sp.setDirecao(SnakePanel.ESQ);
+            }
+        });
+        
+        // E pra direita. 
+        rootPane.getActionMap().put("pressRight", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (sp.getDirecao() != SnakePanel.ESQ) sp.setDirecao(SnakePanel.DIR);
+            }
+        });
+    }
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        cimaBtn = new javax.swing.JButton();
+        painel = new SnakePanel(78, 40, 10);
+        baixoBtn = new javax.swing.JButton();
+        direitaBtn = new javax.swing.JButton();
+        esquerdaBtn = new javax.swing.JButton();
+        passoBtn = new javax.swing.JButton();
+        status = new javax.swing.JLabel();
+        frutaBtn = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        cimaBtn.setText("/\\");
+            cimaBtn.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    cimaBtnActionPerformed(evt);
+                }
+            });
+
+            javax.swing.GroupLayout painelLayout = new javax.swing.GroupLayout(painel);
+            painel.setLayout(painelLayout);
+            painelLayout.setHorizontalGroup(
+                painelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(0, 0, Short.MAX_VALUE)
+            );
+            painelLayout.setVerticalGroup(
+                painelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(0, 507, Short.MAX_VALUE)
+            );
+
+            baixoBtn.setText("\\/");
+            baixoBtn.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    baixoBtnActionPerformed(evt);
+                }
+            });
+
+            direitaBtn.setText(">");
+            direitaBtn.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    direitaBtnActionPerformed(evt);
+                }
+            });
+
+            esquerdaBtn.setText("<");
+            esquerdaBtn.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    esquerdaBtnActionPerformed(evt);
+                }
+            });
+
+            passoBtn.setText("Passo");
+            passoBtn.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    passoBtnActionPerformed(evt);
+                }
+            });
+
+            status.setText("status");
+
+            frutaBtn.setText("Fruta");
+            frutaBtn.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    frutaBtnActionPerformed(evt);
+                }
+            });
+
+            jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+            jLabel1.setText("Nova Fruta");
+
+            jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+            jLabel2.setText("Cima");
+
+            jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+            jLabel3.setText("Direita");
+
+            jLabel4.setText("Esquerda");
+
+            jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+            jLabel5.setText("Baixo");
+
+            jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+            jLabel6.setForeground(new java.awt.Color(255, 0, 0));
+            jLabel6.setText("JOGO SNAKE MAIKITECH");
+
+            javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+            getContentPane().setLayout(layout);
+            layout.setHorizontalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addContainerGap()
+                            .addComponent(painel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(152, 152, 152)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(6, 6, 6)
+                                    .addComponent(jLabel1)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel4)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(esquerdaBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(frutaBtn)
+                                    .addGap(0, 151, Short.MAX_VALUE)))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(cimaBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(baixoBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel2)
+                                .addComponent(jLabel5))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(direitaBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jLabel3)
+                            .addGap(102, 102, 102)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(status, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(passoBtn))))
+                    .addContainerGap())
+                .addGroup(layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jLabel6)
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            );
+            layout.setVerticalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jLabel6)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(painel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGap(4, 4, 4)
+                    .addComponent(jLabel2)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(cimaBtn)
+                        .addComponent(passoBtn)
+                        .addComponent(frutaBtn))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(baixoBtn)
+                        .addComponent(direitaBtn)
+                        .addComponent(esquerdaBtn)
+                        .addComponent(status)
+                        .addComponent(jLabel1)
+                        .addComponent(jLabel3)
+                        .addComponent(jLabel4))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jLabel5))
+            );
+
+            pack();
+            setLocationRelativeTo(null);
+        }// </editor-fold>//GEN-END:initComponents
+
+    private void passoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passoBtnActionPerformed
+        SnakePanel sp = (SnakePanel) painel;
+        StepResult sr = sp.passo();
+        status.setText(sr.name());
+        this.requestFocusInWindow();
+    }//GEN-LAST:event_passoBtnActionPerformed
+
+    private void cimaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cimaBtnActionPerformed
+        SnakePanel sp = (SnakePanel) painel;
+        sp.setDirecao(SnakePanel.CIMA);
+        this.requestFocusInWindow();
+        
+    }//GEN-LAST:event_cimaBtnActionPerformed
+
+    private void esquerdaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_esquerdaBtnActionPerformed
+        SnakePanel sp = (SnakePanel) painel;
+        sp.setDirecao(SnakePanel.ESQ);
+        this.requestFocusInWindow();
+    }//GEN-LAST:event_esquerdaBtnActionPerformed
+
+    private void baixoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_baixoBtnActionPerformed
+        SnakePanel sp = (SnakePanel) painel;
+        sp.setDirecao(SnakePanel.BAIXO);
+        this.requestFocusInWindow();
+    }//GEN-LAST:event_baixoBtnActionPerformed
+
+    private void direitaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_direitaBtnActionPerformed
+        SnakePanel sp = (SnakePanel) painel;
+        sp.setDirecao(SnakePanel.DIR);
+        this.requestFocusInWindow();
+    }//GEN-LAST:event_direitaBtnActionPerformed
+
+    private void frutaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_frutaBtnActionPerformed
+        SnakePanel sp = (SnakePanel) painel;
+        this.requestFocusInWindow();
+        if(!sp.spawnFruit()) {
+            JOptionPane.showMessageDialog(this, "Não foi possível criar fruta");
+            
+        }
+    }//GEN-LAST:event_frutaBtnActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Windows".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(TelaJogo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(TelaJogo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(TelaJogo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(TelaJogo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new TelaJogo().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton baixoBtn;
+    private javax.swing.JButton cimaBtn;
+    private javax.swing.JButton direitaBtn;
+    private javax.swing.JButton esquerdaBtn;
+    private javax.swing.JButton frutaBtn;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JPanel painel;
+    private javax.swing.JButton passoBtn;
+    private javax.swing.JLabel status;
+    // End of variables declaration//GEN-END:variables
+}
