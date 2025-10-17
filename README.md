@@ -9,9 +9,8 @@ Projeto do clássico jogo Snake (cobrinha) desenvolvido em Java com a biblioteca
 
 ## 🎬 Demonstração
 
-*Dica: Para deixar essa seção realmente top, use um programa como o **ScreenToGif** para gravar um GIF rápido do seu jogo funcionando e coloque aqui!*
-
-![GIF do Jogo Aqui] <br>
+![Animação](https://github.com/user-attachments/assets/25587be2-b1a9-4a00-9265-0ffb971c81ab)
+ <br>
 
 ## ✨ Funcionalidades
 
